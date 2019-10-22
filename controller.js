@@ -1,45 +1,41 @@
 'use strict'
 
-const Category = use("App/Models/Category")
+const Instance = use("App/Models/Instance")
 
-class CategoryController {
+class InstanceController {
   async index () {
-    return await Category.all()
+    return await Instance.all()
   }
 
   async show ({ params }) {
-    const category = await Category.findOrFail(params.id)
-    // await category.load('companies')
-    return category
+    const instance = await Instance.findOrFail(params.id)
+    // await instance.load('')
+    return instance
   }
 
   async store ({ request }) {
     const data = request.only([
-      "name",
-      "description",
-      "image_name",
+      properties
     ])
 
-    return await Category.create(data)
+    return await Instance.create(data)
   }
 
   async update ({ params, request }) {
-    const category = await Category.findOrFail(params.id)
+    const instance = await Instance.findOrFail(params.id)
     const data = request.only([
-      "name",
-      "description",
-      "image_name",
+      properties
     ])
 
-    category.merge(data)
+    instance.merge(data)
 
-    return await category.save()
+    return await instance.save()
   }
 
   async destroy ({ params }) {
-    const category = await Category.findOrFail(params.id)
-    return await category.delete()
+    const instance = await Instance.findOrFail(params.id)
+    return await instance.delete()
   }
 }
 
-module.exports = CategoryController
+module.exports = InstanceController
