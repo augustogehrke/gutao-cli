@@ -1,6 +1,6 @@
 'use strict'
 
-const Instance = use("App/Models/Instance")
+const Instance = use('App/Models/Instance')
 
 class InstanceController {
   async index () {

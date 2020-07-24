@@ -10,21 +10,21 @@ const inquirer = require('inquirer')
 /**
  * Define em qual projeto deseja rodar
  */
-const pathProject = '/var/www/api-minicurso'
+const pathProject = '/var/www/api-academia'
 
 program.version(package.version)
 
-//console.log(chalk.cyan(figlet.textSync('Gutao CLI')))
+console.log(chalk.cyan(figlet.textSync('Gutao CLI')))
 
 program
-  .command('controller <name>')
+  .command('controller <propriedades>')
   .description('Cria uma controller')
   .action((name) => {
     inquirer.prompt([
       {
         type: 'input',
         name: 'properties',
-        message: 'Propriedades da Controller'
+        message: 'Propriedades da Controller. EX: prop1 prop2'
       }
     ]).then(answers => {
       fs.readFile(`../gutao-cli/controller.js`, 'utf8', function(err, data) {
@@ -32,14 +32,15 @@ program
         propertiesHtml = ''
         for (let index = 1; index <= properties.length; index++) {
           if (index === properties.length) {
-            propertiesHtml += `"${properties[index-1]}"`
+            propertiesHtml += `'${properties[index-1]}'`
             break;
           }
-          propertiesHtml += `"${properties[index-1]}",\n      `
+          propertiesHtml += `'${properties[index-1]}',\n      `
         }
         toWrite = data.replace(eval('/properties/g'), propertiesHtml)
         toWrite = toWrite.replace(eval('/Instance/g'), name.charAt(0).toUpperCase() + name.substring(1))
         toWrite = toWrite.replace(eval('/instance/g'), name)
+        name = name.charAt(0).toUpperCase() + name.substring(1)
         fs.writeFile(`${pathProject}/app/Controllers/Http/${name}Controller.js`, toWrite, function(err) {
           console.log(`${chalk.green(`${name}Controller.js criada com sucesso!`)}`)
         })
@@ -48,7 +49,7 @@ program
   })
 
 program
-  .command('model <name>')
+  .command('model <propriedades>')
   .description('Cria uma model')
   .action((name) => {
     inquirer.prompt([
@@ -90,10 +91,7 @@ program
         
         toWrite = data.replace(eval('/Instance/g'), fileName)
         toWrite = toWrite.replace('rel', relsHtml)
-        // fs.writeFile(`${pathProject}/app/Models/${fileName}.js`, toWrite, function(err) {
-        //   console.log(`${chalk.green(`${fileName}.js criada com sucesso!`)}`)
-        // })
-        fs.writeFile(`${fileName}.js`, toWrite, function(err) {
+        fs.writeFile(`${pathProject}/app/Models/${fileName}.js`, toWrite, function(err) {
           console.log(`${chalk.green(`${fileName}.js criada com sucesso!`)}`)
         })
       })
