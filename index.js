@@ -6,14 +6,14 @@ const chalk = require('chalk')
 const figlet = require('figlet')
 const fs = require('fs')
 const inquirer = require('inquirer')
+const shell = require('shelljs')
+let pathProject = ''
 
-/**
- * Define em qual projeto deseja rodar
- */
-const pathProject = '/var/www/api-academia'
+shell.exec('pwd', { async:true, silent:true }, function(code, stdout, stderr) {
+  pathProject = stdout.trim()
+})
 
 program.version(package.version)
-
 console.log(chalk.cyan(figlet.textSync('Gutao CLI')))
 
 program
